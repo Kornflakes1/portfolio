@@ -5,6 +5,7 @@
 //   classified: true to show the card picture heavily blurred with an "Unannounced" stamp
 //   locked:     true to grey the card out and make it unclickable
 //   title, tagline
+//   cardTagline: optional short line shown under the name on the Home card (otherwise the tagline)
 //   steam:      optional { label, url } Steam link with the Steam logo, shown at the end of the tagline
 //   role, dates: your role and when, shown under the title (leave "" to hide)
 //   text:       one entry per paragraph
@@ -26,7 +27,8 @@ const PROJECTS = [
     background: "images/PE Redux/1f394133-f88c-49fc-903d-3a0552bc0764.png",
     cardFill: "#ffffff",
     title: "Pandemic Express Redux",
-    tagline: "Unofficial modded client, community and servers for",
+    tagline: "Modded Client, Community and Servers",
+    cardTagline: "CryEngine 5.3",
     steam: { label: "Pandemic Express - Zombie Escape", url: "https://store.steampowered.com/app/939510/" },
     role: "Team Lead / Environment Designer · Radioboys",
     dates: "2024 - 2025",

@@ -328,13 +328,7 @@ main {
 
 .tile.on { background: #ffffff; }
 
-.tile h3 {
-  position: relative;
-  font-size: 23px;
-  line-height: 1.1;
-  transform-origin: left bottom;
-  transform: translateY(calc(var(--text-lift, 0px) * -1)) rotate(var(--text-angle, 0rad));
-}
+.tile h3 { position: relative; font-size: 23px; line-height: 1.1; }
 
 /* ---- Hover trailer: fades in over the card art while hovered ---- */
 
@@ -405,8 +399,8 @@ main {
   left: 50%;
   bottom: 24px;
   color: var(--ink);
-  font: 800 22px/1 var(--mono);
-  letter-spacing: 0.16em;
+  font: 700 22px/1 var(--sans);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   white-space: nowrap;
   transform: translateX(-50%);
@@ -841,6 +835,7 @@ main {
 .gallery img { transition: opacity 0.25s ease, transform 0.25s ease; }
 
 .tile:hover { transform: translateY(-6px) scale(1.03); }
+.tile:not(.square):hover { transform: translateY(-3px); }
 .tile.square:hover { transform: scale(1.02); }
 .gallery img:hover { transform: scale(1.02); }
 
@@ -876,8 +871,10 @@ main {
 .tile.locked {
   filter: grayscale(0.75) contrast(1.15) brightness(0.72);
   cursor: default;
-  pointer-events: none;
 }
+
+/* Locked cards don't lift or grow on hover. */
+.tile.locked:hover { transform: none; }
 
 /* ---- Full-screen project view ---- */
 
@@ -1103,4 +1100,172 @@ html, .pv-scroll { scrollbar-width: thin; scrollbar-color: #3a4446 transparent; 
 .tile.square .classified-stamp { z-index: 1; }
 
 /* Locked cards draw less attention: the label is a dim grey too. */
-.tile.locked .classified-stamp { color: #d6d3cc; }
+.tile.locked .classified-stamp { color: #d6d3cc; opacity: 0.6; }
+
+/* Live server box, matching the PE:Redux site. */
+.server-box {
+  padding: 18px 20px 20px;
+  border: 1px solid var(--line);
+  background: rgba(6, 10, 12, 0.55);
+}
+
+.server-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  color: var(--dim);
+  font: 13px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.server-total { color: var(--ink); font-weight: 700; }
+
+.server-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+}
+
+.server-row:nth-child(2) { border-top: 0; padding-top: 0; }
+
+.server-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.server-meta { display: block; color: var(--dim); font-size: 13px; }
+
+.server-count { color: var(--dim); font: 14px var(--mono); }
+
+.server-join {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.server-join:hover { border-bottom-color: var(--ink); }
+
+.server-status { margin: 0; color: var(--dim); font-size: 14px; }
+
+/* Small grey line under the name on a hovered Home card. */
+.card-tagline {
+  display: block;
+  margin-top: 6px;
+  color: var(--dim);
+  font: 400 14px var(--mono);
+  letter-spacing: 0;
+}
+
+/* Projects squares already show the title, so no "Unannounced" label there. */
+.tile.square .classified-stamp { display: none; }
+
+/* Locked Home card: no label. */
+.tile.locked .classified-stamp { display: none; }
+/* Name and tagline only on hover, like the other cards. */
+
+/* Social buttons at the bottom of every page. */
+.site-footer {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 56px;
+}
+
+/* Outlined buttons; a fill swipes across from the left on hover. */
+a.btn {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  display: inline-block;
+  padding: 11px 20px;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+a.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: translateX(-101%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a.btn:hover::before,
+a.btn:focus-visible::before { transform: translateX(0); }
+
+a.btn:hover,
+a.btn:focus-visible { color: var(--bg); }
+
+a.btn.small { padding: 8px 16px; font-size: 14px; }
+
+@media (max-width: 600px) { .site-footer { padding: 32px 16px 40px; } }
+
+/* ---- Home card text: same height on every card, fades and rises gently on hover ---- */
+
+.tile:not(.square) .art { padding: 16px 18px 34px; }
+
+.tile:not(.square) h3 {
+  font: 700 22px/1.15 var(--sans);
+  letter-spacing: -0.01em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tile:not(.square) .card-tagline {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tile:not(.square) .art::before { transition: opacity 0.35s ease; }
+
+.tile:not(.square):hover h3,
+.tile:not(.square):hover .card-tagline,
+.tile:not(.square).on h3,
+.tile:not(.square).on .card-tagline,
+.tile:not(.square):focus-visible h3,
+.tile:not(.square):focus-visible .card-tagline {
+  opacity: 1;
+  transform: none;
+}
+
+.tile:not(.square):hover h3 {
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tile:not(.square):hover .card-tagline {
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) 0.06s, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) 0.06s;
+}
+
+/* Cards with no picture keep their name showing. */
+.tile.no-art h3, .tile.no-art .card-tagline { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tile:not(.square) h3, .tile:not(.square) .card-tagline { transform: none; transition: opacity 0.2s ease; }
+}
+
+/* Home: social buttons centred under the description. */
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}

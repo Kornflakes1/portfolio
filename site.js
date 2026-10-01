@@ -78,7 +78,7 @@ function viewHtml(p, prev, next) {
   return heroHtml(p)
     + '<header class="pv-head pv-in"><h2>' + esc(p.title) + "</h2>"
     + (p.tagline || p.steam ? '<p class="tagline">' + esc(p.tagline || "")
-        + (p.steam ? ' <a class="steam" href="' + esc(p.steam.url) + '">' + STEAM_ICON + esc(p.steam.label) + "</a>" : "")
+        + (p.steam ? (p.tagline ? " &middot; " : "") + '<a class="steam" href="' + esc(p.steam.url) + '">' + STEAM_ICON + esc(p.steam.label) + "</a>" : "")
         + "</p>" : "")
     + linksHtml(p) + "</header>"
     + (wide
@@ -231,9 +231,10 @@ function makeGrid(grid, list, squares) {
     if (p.classified) return '<button class="tile square classified' + (p.locked ? " locked" : "") + '" data-id="' + esc(p.id) + '"' + (p.locked ? " disabled" : "") + ">" + classifiedArt(p)
       + '<span class="square-text"><h3>' + esc(p.title) + "</h3>"
       + (p.tagline ? '<span class="square-tagline">' + esc(p.tagline) + "</span>" : "") + "</span></button>";
+    const line = p.tagline;
     return '<button class="tile square" data-id="' + esc(p.id) + '"' + art + '>' + hoverVideo(p) + '<span class="square-text">'
       + "<h3>" + esc(p.title) + "</h3>"
-      + (p.tagline ? '<span class="square-tagline">' + esc(p.tagline) + "</span>" : "")
+      + (line ? '<span class="square-tagline">' + esc(line) + "</span>" : "")
       + "</span></button>";
   }).join("");
 
@@ -252,8 +253,10 @@ function makeGrid(grid, list, squares) {
         + (p.cardFocus ? "; background-position: " + esc(p.cardFocus) : "") + '"></span>'
       : "";
     if (p.classified) return '<button class="tile classified' + (p.locked ? " locked" : "") + '" data-id="' + esc(p.id) + '"' + (p.locked ? " disabled" : "") + '><span class="art">' + classifiedArt(p)
-      + "<h3>" + esc(p.title) + "</h3></span></button>";
-    return '<button class="tile" data-id="' + esc(p.id) + '"><span class="art"' + art + ">" + backdrop + hoverVideo(p) + "<h3>" + esc(p.title) + "</h3></span></button>";
+      + "<h3>" + esc(p.title) + (p.tagline ? '<span class="card-tagline">' + esc(p.tagline) + "</span>" : "") + "</h3></span></button>";
+    const small = p.cardTagline || p.tagline;
+    return '<button class="tile" data-id="' + esc(p.id) + '"><span class="art"' + art + ">" + backdrop + hoverVideo(p)
+      + "<h3>" + esc(p.title) + (small ? '<span class="card-tagline">' + esc(small) + "</span>" : "") + "</h3></span></button>";
   }).join("");
 
   // The row's outline dips towards the middle: each card's top and bottom edge slope
@@ -298,7 +301,7 @@ function makeGrid(grid, list, squares) {
     hint.className = "open-hint";
     hint.textContent = "Click to Expand";
     grid.appendChild(hint);
-    grid.querySelectorAll(".tile").forEach(function (t) {
+    grid.querySelectorAll(".tile:not(.locked)").forEach(function (t) {
       t.addEventListener("mouseenter", function () {
         const mid = Number(t.dataset.bottomMid || 100) / 100;
         hint.style.left = (t.offsetLeft + t.offsetWidth / 2) + "px";
@@ -408,27 +411,46 @@ document.addEventListener("keydown", function (e) {
 // Live server status, one line per server.
 const JOIN_URL = "steam://run/939510//+connect {ip}:{port}";
 
+// m:ss for round timers.
+function clock(ms) {
+  const t = Math.max(0, Math.round(ms / 1000));
+  return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
+}
+
+function phaseText(s) {
+  const now = Date.now();
+  if (s.phase === "countdown" && s.countdownEndsAt) return "Starting in " + clock(s.countdownEndsAt - now);
+  if (s.phase === "live" && s.matchStartedAt) return "Live \u00b7 " + clock(now - s.matchStartedAt);
+  return "Waiting for players";
+}
+
+// Server box like the PE:Redux site: header with total players, one row per server.
 function refreshServers(box) {
+  const shell = function (count, rows) {
+    return '<div class="server-box"><div class="server-head"><span>Servers</span><span class="server-total">' + count + "</span></div>" + rows + "</div>";
+  };
   fetch(box.dataset.feed, { cache: "no-store" })
     .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
     .then(function (data) {
       const servers = data.servers || [];
+      const players = typeof data.players === "number" ? data.players
+        : servers.reduce(function (n, s) { return n + (s.players || 0); }, 0);
       if (!servers.length) {
-        box.innerHTML = '<p class="server-line">No servers online right now</p>';
+        box.innerHTML = shell("", '<p class="server-status">No servers online right now</p>');
         return;
       }
-      box.innerHTML = servers.map(function (s) {
+      box.innerHTML = shell(players === 1 ? "1 player online" : players + " players online", servers.map(function (s) {
         const href = s.ip ? JOIN_URL.replace("{ip}", s.ip).replace("{port}", s.port || 2838) : "";
-        const live = (s.players || 0) > 0 ? " live" : "";
-        return '<p class="server-line"><span class="dot' + live + '"></span>'
-          + (servers.length > 1 ? esc(s.name || s.ip) + " &middot; " : "")
-          + (s.players || 0) + "/" + (s.maxPlayers || 30) + " players online"
-          + (href ? ' &middot; <a href="' + esc(href) + '">Join</a>' : "")
-          + "</p>";
-      }).join("");
+        const meta = [s.map, s.region].filter(Boolean).map(esc).join(" &middot; ");
+        return '<div class="server-row"><span class="server-name">' + esc(s.name || s.ip)
+          + '<span class="server-meta">' + (meta ? meta + " &middot; " : "") + esc(phaseText(s)) + "</span></span>"
+          + '<span class="server-count">' + (s.players || 0) + "/" + (s.maxPlayers || 30) + "</span>"
+          + (href ? '<a class="server-join" href="' + esc(href) + '">Join</a>' : "<span></span>")
+          + "</div>";
+      }).join(""));
     })
     .catch(function () {
-      box.innerHTML = '<p class="server-line">Server list unavailable</p>';
+      box.innerHTML = shell("", '<p class="server-status">Server list unavailable</p>');
     });
 }
 
