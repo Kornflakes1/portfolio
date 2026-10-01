@@ -1344,14 +1344,14 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
   .pv-nav { padding: 24px 20px 32px; }
 }
 
-/* Credits: role on the left, name on the right. */
+/* Credits: name on the left, role on the right. */
 .credits {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 10px 32px;
   max-width: 720px;
   margin: 0;
 }
-.credits dt { color: var(--dim); font-size: 15px; line-height: 1.6; }
-.credits dd { margin: 0; font-size: 15px; line-height: 1.6; font-weight: 600; text-align: right; }
+.credits dt { font-size: 15px; line-height: 1.6; font-weight: 600; }
+.credits dd { margin: 0; color: var(--dim); font-size: 15px; line-height: 1.6; text-align: right; }
 .pv-section .credits + .detail-label { margin-top: 36px; }

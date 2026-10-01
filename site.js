@@ -69,7 +69,7 @@ function viewHtml(p, prev, next) {
   const credits = p.credits && p.credits.length
     ? '<section class="pv-section">' + p.credits.map(function (g) {
         return '<h4 class="detail-label">' + esc(g.title) + '</h4><dl class="credits">' + g.rows.map(function (r) {
-          return "<dt>" + esc(r.role) + "</dt><dd>" + esc(r.name) + "</dd>";
+          return "<dt>" + esc(r.name) + "</dt><dd>" + esc(r.role) + "</dd>";
         }).join("") + "</dl>";
       }).join("") + "</section>"
     : "";
