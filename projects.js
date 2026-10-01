@@ -43,7 +43,7 @@ const PROJECTS = [
       { number: "Up to 400%", label: "better performance and stability" }
     ],
     highlights: [
-      "Led a team of 6 to design new open-world locations and rework existing ones",
+      "Led a team of 6 in overhauling the game's core mechanics, balance and systems through regular updates",
       "Allocated tasks and planned milestones so the team shipped a major patch every week",
       "Used CryEngine 5.3's lighting, effects and particles to shape the maps' flow and atmosphere",
       "Reworked existing map areas within the established art style to improve visual composition and support the asymmetric gameplay",
