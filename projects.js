@@ -49,8 +49,8 @@ const PROJECTS = [
       "Used CryEngine 5.3's lighting, effects and particles to shape the maps' flow and atmosphere",
       "Reworked existing map areas within the established art style to improve visual composition and support the asymmetric gameplay",
       "Built new locations from the existing asset library, working within the limits of an older engine version",
-      "Ran the team's closed playtests and turned player data into balance, bug and layout fixes",
-      "Organised community events to keep players coming back"
+      "Ran playtests and turned player feedback into balance, bug and layout fixes",
+      "Organised community events to keep players engaged"
     ],
     servers: "https://peredux.duckdns.org/servers.json",
     links: [
