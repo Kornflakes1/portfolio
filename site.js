@@ -66,6 +66,13 @@ function viewHtml(p, prev, next) {
   const features = p.features && p.features.length
     ? '<section class="pv-section"><h4 class="detail-label">Features</h4>' + list(p.features) + "</section>"
     : "";
+  const credits = p.credits && p.credits.length
+    ? '<section class="pv-section">' + p.credits.map(function (g) {
+        return '<h4 class="detail-label">' + esc(g.title) + '</h4><dl class="credits">' + g.rows.map(function (r) {
+          return "<dt>" + esc(r.role) + "</dt><dd>" + esc(r.name) + "</dd>";
+        }).join("") + "</dl>";
+      }).join("") + "</section>"
+    : "";
   const role = p.role || p.dates || (p.highlights && p.highlights.length)
     ? '<div class="pv-role"><h4 class="detail-label">Role</h4>'
       + (p.role || p.dates ? '<p class="role">' + esc(p.role || "")
@@ -85,7 +92,7 @@ function viewHtml(p, prev, next) {
         + (p.steam ? (p.tagline ? " &middot; " : "") + '<a class="steam" href="' + esc(p.steam.url) + '">' + STEAM_ICON + esc(p.steam.label) + "</a>" : "")
         + "</p>" : "")
     + linksHtml(p) + "</header>"
-    + '<div class="pv-body pv-in">' + intro + results + features
+    + '<div class="pv-body pv-in">' + intro + results + features + credits
     + (role || servers ? '<section class="pv-section pv-pair' + (role && servers ? "" : " single") + '">' + role + servers + "</section>" : "")
     + "</div>"
     + (pics.length ? '<div class="gallery pv-gallery pv-in">' + pics.map(function (src) {

@@ -19,6 +19,7 @@
 //   hoverCycle: optional, true to flick through the gallery pictures on the card while hovered
 //   hoverVideo: optional muted clip that plays on the card while hovered
 //   features:   optional bullet list shown as "Features"
+//   credits:    optional groups of { role, name } shown as "Credits"
 //   gallery:    pictures shown when the project is opened (put them in images/gallery/)
 const PROJECTS = [
   {
@@ -84,6 +85,19 @@ const PROJECTS = [
       "Fully voice acted characters",
       "A rage mode that lets you tear enemies apart",
       "A tutorial, three levels and a fully playable boss fight (I managed to get it out!!)"
+    ],
+    credits: [
+      { title: "Credits", rows: [
+        { role: "Game Design, Gameplay, Programming, Level Design", name: "Jasper" },
+        { role: "Gameplay & Level Design", name: "Ethan H." },
+        { role: "Gameplay and UI Design + Sprites", name: "Ethan B." },
+        { role: "Sound Design", name: "Deanerdaweiner" },
+        { role: "Key Art", name: "Goodman29" }
+      ] },
+      { title: "Voice Acting", rows: [
+        { role: "Sheriff, Enemies", name: "Ethan H." },
+        { role: "Bartender, Boss", name: "Kazuki, Jasper" }
+      ] }
     ],
     highlights: [],
     links: [
