@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jasper Mellor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=81">
+</head>
+<body data-page="home" class="waiting">
+<script>
+  // The fade-in only plays on a fresh visit or a refresh, not when coming back from another page.
+  (function () {
+    var nav = performance.getEntriesByType("navigation")[0];
+    var seen = false;
+    try { seen = sessionStorage.getItem("introSeen") === "1"; sessionStorage.setItem("introSeen", "1"); } catch (e) {}
+    if (seen && !(nav && nav.type === "reload")) document.body.classList.remove("waiting");
+  })();
+</script>
+
+<header class="top">
+  <div class="brand">
+    <a class="home" href="index.html">Jasper Mellor</a>
+    <span class="contact-label">Contact</span>
+    <button class="email" data-email="jasper.m.mellor@gmail.com" title="Click to copy">jasper.m.mellor@gmail.com</button>
+  </div>
+  <nav>
+    <a href="index.html" data-page="home">Home</a>
+    <a href="projects.html" data-page="projects">Projects</a>
+    <a href="about.html" data-page="about">About</a>
+  </nav>
+</header>
+
+<!-- The Final Call menu video plays behind the whole first screen. -->
+<div class="stage">
+  <video class="stage-video" src="images/One More Round/main-menu.mp4?v=3" autoplay muted loop playsinline></video>
+  <button class="sound-toggle" aria-pressed="false" aria-label="Turn sound on">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path class="speaker" fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z"/>
+      <path class="waves" fill="none" stroke="currentColor" stroke-width="2" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/>
+      <line class="slash" x1="3" y1="3" x2="21" y2="21" stroke="#e5484d" stroke-width="2.5"/>
+    </svg>
+  </button>
+
+<section class="banner">
+  <div class="banner-inner">
+    <h1>I build spaces players want to explore.</h1>
+  </div>
+</section>
+
+<main>
+  <!-- Projects come from projects.js -->
+  <div class="grid"></div>
+
+  <div class="intro">
+    <p class="lead">I'm a 21-year-old self-taught Level Designer, Technical Artist &amp; Producer.</p>
+    <p>
+      10,000+ hours across Unreal, CryEngine, DayZ modding tools, s&amp;box and Source 2.
+      I've led small dev and modding teams, revived a discontinued game and grew
+      its community to 1,500+ members, built open-world and linear environments from
+      blockout to final art pass, and helped ship updates to communities of
+      over 100k players.
+    </p>
+  </div>
+</main>
+
+</div>
+
+<div class="viewer" hidden><img alt=""></div>
+
+<script src="projects.js?v=81"></script>
+<script src="site.js?v=81"></script>
+</body>
+</html>
