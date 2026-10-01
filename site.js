@@ -52,46 +52,49 @@ function heroHtml(p) {
 }
 
 function viewHtml(p, prev, next) {
-  const main = p.text.map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("")
-    + (p.features && p.features.length
-      ? '<h4 class="detail-label">Features</h4><ul class="highlights">'
-        + p.features.map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") + "</ul>"
-      : "")
-    + (p.results && p.results.length
-      ? '<h4 class="detail-label">Key results</h4><div class="results">' + p.results.map(function (r) {
-          return '<div class="result"><strong>' + esc(r.number) + "</strong><span>" + esc(r.label) + "</span></div>";
-        }).join("") + "</div>"
-      : "");
-  const side = (p.role || p.dates || (p.highlights && p.highlights.length)
-      ? '<h4 class="detail-label">Role</h4>'
-        + (p.role || p.dates ? '<p class="role">' + esc(p.role || "")
-            + (p.role && p.dates ? " &middot; " : "") + esc(p.dates || "") + "</p>" : "")
-        + (p.highlights && p.highlights.length
-          ? '<ul class="highlights">' + p.highlights.map(function (h) { return "<li>" + esc(h) + "</li>"; }).join("") + "</ul>"
-          : "")
-      : "")
-    + (p.servers ? '<div class="servers" data-feed="' + esc(p.servers) + '"><p class="server-line">Loading&hellip;</p></div>' : "");
+  const list = function (items) {
+    return '<ul class="highlights">' + items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>";
+  };
+  const intro = p.text.length
+    ? '<section class="pv-section pv-intro">' + p.text.map(function (t) { return "<p>" + esc(t) + "</p>"; }).join("") + "</section>"
+    : "";
+  const results = p.results && p.results.length
+    ? '<section class="pv-section"><h4 class="detail-label">Key results</h4><div class="results">' + p.results.map(function (r) {
+        return '<div class="result"><strong>' + esc(r.number) + "</strong><span>" + esc(r.label) + "</span></div>";
+      }).join("") + "</div></section>"
+    : "";
+  const features = p.features && p.features.length
+    ? '<section class="pv-section"><h4 class="detail-label">Features</h4>' + list(p.features) + "</section>"
+    : "";
+  const role = p.role || p.dates || (p.highlights && p.highlights.length)
+    ? '<div class="pv-role"><h4 class="detail-label">Role</h4>'
+      + (p.role || p.dates ? '<p class="role">' + esc(p.role || "")
+          + (p.role && p.dates ? " &middot; " : "") + esc(p.dates || "") + "</p>" : "")
+      + (p.highlights && p.highlights.length ? list(p.highlights) : "") + "</div>"
+    : "";
+  const servers = p.servers
+    ? '<div class="pv-status"><div class="servers" data-feed="' + esc(p.servers) + '"><p class="server-line">Loading&hellip;</p></div></div>'
+    : "";
   const pics = p.gallery || [];
 
-  // With no description, the Role section takes the left side instead.
-  const wide = !main && side;
+  // Intro, then results/features full width, then Role and Servers side by side.
   return heroHtml(p)
+    + '<div class="pv-content">'
     + '<header class="pv-head pv-in"><h2>' + esc(p.title) + "</h2>"
     + (p.tagline || p.steam ? '<p class="tagline">' + esc(p.tagline || "")
         + (p.steam ? (p.tagline ? " &middot; " : "") + '<a class="steam" href="' + esc(p.steam.url) + '">' + STEAM_ICON + esc(p.steam.label) + "</a>" : "")
         + "</p>" : "")
     + linksHtml(p) + "</header>"
-    + (wide
-      ? '<div class="pv-body pv-in single"><div class="pv-main pv-side">' + side + "</div></div>"
-      : '<div class="pv-body pv-in' + (side ? "" : " single") + '"><div class="pv-main">' + main + "</div>"
-        + (side ? '<aside class="pv-side">' + side + "</aside>" : "") + "</div>")
+    + '<div class="pv-body pv-in">' + intro + results + features
+    + (role || servers ? '<section class="pv-section pv-pair' + (role && servers ? "" : " single") + '">' + role + servers + "</section>" : "")
+    + "</div>"
     + (pics.length ? '<div class="gallery pv-gallery pv-in">' + pics.map(function (src) {
         return '<span class="gallery-item"><img src="' + esc(src) + '" alt="" loading="lazy"></span>';
       }).join("") + "</div>" : "")
     + '<nav class="pv-nav pv-in">'
     + (prev ? '<button class="pv-step" data-step="-1">&larr; ' + esc(prev.title) + "</button>" : "<span></span>")
     + (next ? '<button class="pv-step" data-step="1">' + esc(next.title) + " &rarr;</button>" : "<span></span>")
-    + "</nav>";
+    + "</nav></div>";
 }
 
 const pv = document.createElement("div");

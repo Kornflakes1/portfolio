@@ -868,9 +868,15 @@ main {
 }
 
 /* Locked projects: greyed out and can't be opened. */
-.tile.locked {
-  filter: grayscale(0.75) contrast(1.15) brightness(0.72);
-  cursor: default;
+/* Greyed out. The filter goes on the picture, not the card: a filter on the card itself
+   can make the browser drop the card's sloped outline and show a square frame. */
+.tile.locked { background: #9a978f; cursor: default; }
+
+.tile.locked .art { filter: grayscale(0.75) contrast(1.15) brightness(0.72); }
+
+/* The square has no inner wrapper, so its blurred picture keeps the blur and adds the grey. */
+.tile.square.locked > .classified-art {
+  filter: blur(22px) saturate(1.6) brightness(1.1) grayscale(0.75) contrast(1.15) brightness(0.72);
 }
 
 /* Locked cards don't lift or grow on hover. */
@@ -1268,4 +1274,72 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
   justify-content: center;
   gap: 10px;
   margin-top: 32px;
+}
+
+/* ---- Project view layout: narrower, more space, no lopsided columns ---- */
+
+/* Everything below the hero sits in a centred column. */
+.pv-content { max-width: 1100px; margin: 0 auto; }
+
+.pv-head { margin-top: -110px; padding: 0 48px 8px; }
+
+.pv-head .links { margin-top: 22px; }
+
+.pv-body {
+  display: block;
+  max-width: none;
+  padding: 48px 48px 0;
+}
+
+.pv-section + .pv-section { margin-top: 64px; }
+
+.pv-section .detail-label:first-child { margin-top: 0; }
+
+.pv-intro { max-width: 720px; }
+
+.pv-intro p { margin: 0 0 18px; font-size: 17px; line-height: 1.75; }
+
+.pv-intro p:last-child { margin-bottom: 0; }
+
+/* Key results: one row of four. */
+.pv-content .results { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+
+/* Role and live servers side by side. */
+.pv-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 56px;
+  align-items: start;
+}
+
+.pv-pair.single { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+
+.pv-pair .role { margin-bottom: 18px; }
+
+/* Bullets: smaller, grey, more space between. */
+.pv-content .highlights { margin: 0; }
+
+.pv-content .highlights li {
+  margin-top: 12px;
+  color: #b9b6af;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.pv-content .highlights li:first-child { margin-top: 0; }
+
+.pv-content .servers { margin-top: 0; }
+
+.pv-gallery { padding: 64px 48px 0; }
+
+.pv-nav { margin-top: 72px; padding: 28px 48px 40px; }
+
+@media (max-width: 900px) {
+  .pv-head { margin-top: -80px; padding: 0 20px 4px; }
+  .pv-body { padding: 32px 20px 0; }
+  .pv-section + .pv-section { margin-top: 44px; }
+  .pv-content .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pv-pair { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .pv-gallery { padding: 40px 20px 0; }
+  .pv-nav { padding: 24px 20px 32px; }
 }

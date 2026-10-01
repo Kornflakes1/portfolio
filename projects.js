@@ -34,7 +34,7 @@ const PROJECTS = [
     dates: "2024 - 2025",
     text: [
       "Redux is a community-made overhaul that brought Pandemic Express back to life years after official support ended. I led a small volunteer team shipping regular patches, new and reworked open-world locations, and major performance gains through a custom launcher.",
-      "As of the 21st of January 2026, Tinybuild announced they will be delisting the game on Steam, making it totally undiscoverable to new players. Redux will be unaffected and you will be able to play without owning it on steam."
+      "As of the 21st of January 2026, Tinybuild announced they would be delisting the game on Steam, making it totally undiscoverable to new players. Redux will be unaffected and you will be able to play without owning it on steam."
     ],
     results: [
       { number: "25+", label: "major patches in 6 months" },
@@ -55,7 +55,8 @@ const PROJECTS = [
     links: [
       { label: "Website", url: "https://peredux.duckdns.org/" },
       { label: "GitHub", url: "https://github.com/Kornflakes1/PandemicExpressRedux" },
-      { label: "YouTube", url: "https://www.youtube.com/@PE-Redux" }
+      { label: "YouTube", url: "https://www.youtube.com/@PE-Redux" },
+      { label: "Discord", url: "https://discord.gg/J8287MJTay" }
     ],
     gallery: []
   },
@@ -64,7 +65,6 @@ const PROJECTS = [
     category: "games",
     background: "images/One More Round/key art.png",
     cardFocus: "47% 46%",
-    cardZoom: 1.1,
     hoverVideo: "images/One More Round/trailer-preview.mp4",
     title: "Final Call",
     tagline: "s&box",
