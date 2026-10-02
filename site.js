@@ -95,12 +95,9 @@ function viewHtml(p, prev, next) {
     + '<div class="pv-body pv-in">' + intro + results + features + credits
     + (role || servers ? '<section class="pv-section pv-pair' + (role && servers ? "" : " single") + '">' + role + servers + "</section>" : "")
     + "</div>"
-    + (pics.length ? '<div class="gallery pv-gallery pv-in">' + pics.map(function (pic) {
-        const src = pic.src || pic;
-        return '<span class="gallery-item">' + (pic.video
-            ? '<video src="' + esc(src) + '"' + (pic.youtube ? ' data-youtube="' + esc(pic.youtube) + '"' : "") + ' autoplay muted loop playsinline></video>'
-            : '<img src="' + esc(src) + '" alt="" loading="lazy">')
-          + (pic.label ? '<span class="gallery-tag">' + esc(pic.label) + "</span>" : "") + "</span>";
+    + (pics.length ? '<div class="pv-gallery pv-in">' + galleryGroups(pics).map(function (g) {
+        return '<section class="gallery-group' + (g.name === "Screenshots" ? " shots" : "") + '">'
+          + '<h4 class="detail-label">' + esc(g.name) + '</h4><div class="gallery">' + g.pics.map(galleryItem).join("") + "</div></section>";
       }).join("") + "</div>" : "")
     + '<nav class="pv-nav pv-in">'
     + (prev ? '<button class="pv-step" data-step="-1">&larr; ' + esc(prev.title) + "</button>" : "<span></span>")
@@ -118,6 +115,27 @@ document.body.appendChild(pv);
 const pvFrame = pv.querySelector(".pv-frame");
 const pvScroll = pv.querySelector(".pv-scroll");
 const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// One gallery picture or clip, with its tag if it has one.
+function galleryItem(pic) {
+  const src = pic.src || pic;
+  return '<span class="gallery-item">' + (pic.video
+      ? '<video src="' + esc(src) + '"' + (pic.youtube ? ' data-youtube="' + esc(pic.youtube) + '"' : "") + ' autoplay muted loop playsinline></video>'
+      : '<img src="' + esc(src) + '" alt="" loading="lazy">')
+    + (pic.label ? '<span class="gallery-tag">' + esc(pic.label) + "</span>" : "") + "</span>";
+}
+
+// Gallery pictures sorted into their groups, in the order the groups first appear.
+function galleryGroups(pics) {
+  const groups = [];
+  pics.forEach(function (pic) {
+    const name = pic.group || "Screenshots";
+    let g = groups.find(function (x) { return x.name === name; });
+    if (!g) groups.push(g = { name: name, pics: [] });
+    g.pics.push(pic);
+  });
+  return groups;
+}
+
 const touch = window.matchMedia("(hover: none)").matches;
 const phone = window.matchMedia("(max-width: 600px)");
 
@@ -186,8 +204,7 @@ function fillView() {
   pvScroll.innerHTML = layers + viewHtml(p, pvList[pvIndex - 1], pvList[pvIndex + 1]);
   pvScroll.scrollTop = 0;
   watchLayers();
-  const gal = pvScroll.querySelector(".pv-gallery");
-  if (gal) coverFlow(gal, Array.from(gal.children));
+  pvScroll.querySelectorAll(".pv-gallery .gallery").forEach(function (gal) { coverFlow(gal, Array.from(gal.children)); });
   const box = pvScroll.querySelector(".servers");
   if (box) {
     refreshServers(box);

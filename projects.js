@@ -20,7 +20,8 @@
 //   hoverVideo: optional muted clip that plays on the card while hovered
 //   features:   optional bullet list shown as "Features"
 //   credits:    optional groups of { role, name } shown as "Credits"
-//   gallery:    pictures shown when the project is opened; a picture can be { src, label } to tag it, add video: true for a clip, youtube: id to open that video when clicked
+//   gallery:    pictures shown when the project is opened; a picture can be { src, group, label }: group is the heading it sits under
+//               (plain pictures go under "Screenshots"), label tags it, video: true for a clip, youtube: id to open that video when clicked
 //   bgVideo:    optional clip that plays once, faintly, behind the whole project view
 const PROJECTS = [
   {
@@ -62,9 +63,9 @@ const PROJECTS = [
     ],
     bgVideo: "images/pe-redux/radioboys.mp4",
     gallery: [
-      { src: "images/pe-redux/roadmap.jpg", label: "Roadmap" },
-      { src: "images/pe-redux/update-1-5.jpg", label: "Update" },
-      { src: "images/pe-redux/infographic.jpg", label: "Infographic" }
+      { src: "images/pe-redux/roadmap.jpg", group: "Graphics", label: "Roadmap" },
+      { src: "images/pe-redux/update-1-5.jpg", group: "Graphics", label: "Update" },
+      { src: "images/pe-redux/infographic.jpg", group: "Graphics", label: "Infographic" }
     ]
   },
   {
@@ -110,24 +111,25 @@ const PROJECTS = [
       { label: "Play on s&box", url: "https://sbox.game/kornflakes/one_more_round" }
     ],
     gallery: [
-      { src: "images/final-call/thumbnail.jpg", label: "Thumbnail" },
-      { src: "images/final-call/trailer-preview.mp4", label: "Trailer", video: true, youtube: "mxjlMaIrxw8" },
-      { src: "images/final-call/main-menu.mp4", label: "Main Menu", video: true },
-      { src: "images/final-call/screenshots/church.png", label: "Screenshot" },
-      { src: "images/final-call/screenshots/01.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/02.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/03.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/04.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/05.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/06.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/07.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/08.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/09.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/10.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/11.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/12.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/13.jpg", label: "Screenshot" },
-      { src: "images/final-call/screenshots/14.jpg", label: "Screenshot" }
+      { src: "images/final-call/trailer-preview.mp4", group: "Videos", label: "Trailer", video: true, youtube: "mxjlMaIrxw8" },
+      { src: "images/final-call/main-menu.mp4", group: "Videos", label: "Main Menu", video: true },
+      { src: "images/final-call/thumbnail.jpg", group: "Art", label: "Thumbnail" },
+      { src: "images/final-call/key-art.png", group: "Art", label: "Key Art" },
+      { src: "images/final-call/screenshots/church.png" },
+      { src: "images/final-call/screenshots/01.jpg" },
+      { src: "images/final-call/screenshots/02.jpg" },
+      { src: "images/final-call/screenshots/03.jpg" },
+      { src: "images/final-call/screenshots/04.jpg" },
+      { src: "images/final-call/screenshots/05.jpg" },
+      { src: "images/final-call/screenshots/06.jpg" },
+      { src: "images/final-call/screenshots/07.jpg" },
+      { src: "images/final-call/screenshots/08.jpg" },
+      { src: "images/final-call/screenshots/09.jpg" },
+      { src: "images/final-call/screenshots/10.jpg" },
+      { src: "images/final-call/screenshots/11.jpg" },
+      { src: "images/final-call/screenshots/12.jpg" },
+      { src: "images/final-call/screenshots/13.jpg" },
+      { src: "images/final-call/screenshots/14.jpg" }
     ]
   },
   {
