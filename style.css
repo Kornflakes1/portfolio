@@ -1455,15 +1455,15 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
   main > .grid {
     flex-wrap: nowrap;
     justify-content: flex-start;
-    gap: 14px;
+    gap: 0;
     margin: 0 -16px;
-    padding: 8px 19vw 16px;
+    padding: 8px 24vw 16px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
   }
   main > .grid::-webkit-scrollbar { display: none; }
-  main > .grid .tile { flex: 0 0 62vw; padding: 4px; scroll-snap-align: center; }
+  main > .grid .tile { flex: 0 0 52vw; padding: 4px; scroll-snap-align: center; }
   main > .grid .tile:hover { transform: none; }
 
   /* Social buttons on one line. */
