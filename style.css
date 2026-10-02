@@ -1361,7 +1361,6 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 300px);
   mask-image: linear-gradient(to bottom, transparent, #000 300px);
@@ -1384,8 +1383,13 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom,
-    rgba(14, 20, 22, 0) 0, rgba(14, 20, 22, 0) 30vh,
-    rgba(14, 20, 22, 0.86) 62vh, rgba(14, 20, 22, 0.86) calc(100% - 300px),
+    rgba(14, 20, 22, 0) 0,
+    rgba(14, 20, 22, 0) 28vh,
+    rgba(14, 20, 22, 0.3) 40vh,
+    rgba(14, 20, 22, 0.62) 50vh,
+    rgba(14, 20, 22, 0.84) 60vh,
+    rgba(14, 20, 22, 0.92) calc(60vh + (100% - 60vh) * 0.3),
+    rgba(14, 20, 22, 0.97) calc(60vh + (100% - 60vh) * 0.65),
     #0e1416 100%);
 }
 .project-view:not(.pv-anim) .pv-hero.long { background: none !important; }

@@ -165,11 +165,15 @@ function placeLayers() {
   const from = pvScroll.querySelector(".pv-pair");
   if (!top || !bg || !from) return;
   const line = topIn(from) - 32;
+  const content = pvScroll.querySelector(".pv-content");
   top.style.height = (line + 80) + "px";
   bg.style.top = (line - 140) + "px";
+  // Absolute boxes in a scroller can't stretch to the content's end, so size it by hand.
+  bg.style.height = Math.max(0, topIn(content) + content.offsetHeight - (line - 140)) + "px";
+  checkClip();
 }
 function watchLayers() {
-  if (bgWatch) { bgWatch.disconnect(); bgWatch = null; }
+  bgWatch = null;
   if (heroWatch) { heroWatch.disconnect(); heroWatch = null; }
   const bg = pvScroll.querySelector(".pv-bg");
   if (!bg) return;
@@ -179,15 +183,18 @@ function watchLayers() {
   heroWatch = new ResizeObserver(placeLayers);
   heroWatch.observe(hero);
   placeLayers();
-  const video = bg.querySelector("video");
-  bgWatch = new IntersectionObserver(function (entries) {
-    if (!entries[0].isIntersecting) return;
-    video.play().catch(function () {});
-    bgWatch.disconnect();
-    bgWatch = null;
-  }, { root: pvScroll, threshold: 0.3 });
-  bgWatch.observe(pvScroll.querySelector(".pv-pair") || bg);
+  bgWatch = bg.querySelector("video");
+  checkClip();
 }
+// Plays the clip once Role is a third of the way up the view.
+function checkClip() {
+  if (!bgWatch || !pvScroll.clientHeight || pv.classList.contains("pv-anim")) return;
+  const from = pvScroll.querySelector(".pv-pair");
+  if (!from || from.getBoundingClientRect().top > pvScroll.getBoundingClientRect().bottom - pvScroll.clientHeight / 3) return;
+  bgWatch.play().catch(function () {});
+  bgWatch = null;
+}
+pvScroll.addEventListener("scroll", checkClip, { passive: true });
 window.addEventListener("resize", placeLayers);
 
 function openView(list, index, tile, instant) {
