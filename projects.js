@@ -35,7 +35,7 @@ const PROJECTS = [
     dates: "2024 - 2026 (Ongoing)",
     text: [
       "Redux is a community-made overhaul that brought Pandemic Express back to life years after official support ended. I led a small volunteer team shipping regular patches, new and reworked open-world locations, and major performance gains through a custom launcher.",
-      "As of the 21st of January 2026, Tinybuild announced they would be delisting the game on Steam, making it totally undiscoverable to new players. Redux will be unaffected and you will be able to play without owning it on steam."
+      "On the 21st of January 2026, Tinybuild announced they would be delisting the game from Steam, making it undiscoverable to new players. Redux is unaffected, and you can still play it without owning the game on Steam."
     ],
     results: [
       { number: "25+", label: "major patches in 6 months" },
