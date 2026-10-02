@@ -26,7 +26,7 @@ const PROJECTS = [
   {
     id: "pe-redux",
     category: "modding",
-    background: "images/PE Redux/1f394133-f88c-49fc-903d-3a0552bc0764.png",
+    background: "images/pe-redux/card.png",
     cardFill: "#ffffff",
     title: "Pandemic Express Redux",
     tagline: "Modded Client, Community and Servers",
@@ -60,19 +60,19 @@ const PROJECTS = [
       { label: "YouTube", url: "https://www.youtube.com/@PE-Redux" },
       { label: "Discord", url: "https://discord.gg/J8287MJTay" }
     ],
-    bgVideo: "images/PE Redux/web/radioboys.mp4",
+    bgVideo: "images/pe-redux/radioboys.mp4",
     gallery: [
-      { src: "images/PE Redux/web/roadmap.jpg", label: "Roadmap" },
-      { src: "images/PE Redux/web/update-1-5.jpg", label: "Update" },
-      { src: "images/PE Redux/web/infographic.jpg", label: "Infographic" }
+      { src: "images/pe-redux/roadmap.jpg", label: "Roadmap" },
+      { src: "images/pe-redux/update-1-5.jpg", label: "Update" },
+      { src: "images/pe-redux/infographic.jpg", label: "Infographic" }
     ]
   },
   {
     id: "one-more-round",
     category: "games",
-    background: "images/One More Round/key art.png",
+    background: "images/final-call/key-art.png",
     cardFocus: "47% 46%",
-    hoverVideo: "images/One More Round/trailer-preview.mp4",
+    hoverVideo: "images/final-call/trailer-preview.mp4",
     title: "Final Call",
     tagline: "s&box",
     role: "",
@@ -110,15 +110,30 @@ const PROJECTS = [
       { label: "Play on s&box", url: "https://sbox.game/kornflakes/one_more_round" }
     ],
     gallery: [
-      { src: "images/One More Round/Church.png", label: "Screenshot" },
-      { src: "images/One More Round/trailer-preview.mp4", label: "Trailer", video: true, youtube: "mxjlMaIrxw8" },
-      { src: "images/One More Round/main-menu.mp4", label: "Main Menu", video: true }
+      { src: "images/final-call/thumbnail.jpg", label: "Thumbnail" },
+      { src: "images/final-call/trailer-preview.mp4", label: "Trailer", video: true, youtube: "mxjlMaIrxw8" },
+      { src: "images/final-call/main-menu.mp4", label: "Main Menu", video: true },
+      { src: "images/final-call/screenshots/church.png", label: "Screenshot" },
+      { src: "images/final-call/screenshots/01.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/02.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/03.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/04.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/05.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/06.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/07.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/08.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/09.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/10.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/11.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/12.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/13.jpg", label: "Screenshot" },
+      { src: "images/final-call/screenshots/14.jpg", label: "Screenshot" }
     ]
   },
   {
     id: "dayz",
     category: "modding",
-    background: "images/Project Flamingo Dayz/meadows title.png",
+    background: "images/project-flamingo/title.png",
     cardZoom: 0.7,
     hoverCycle: true,
     title: "Project Flamingo",
@@ -136,21 +151,21 @@ const PROJECTS = [
     ],
     links: [],
     gallery: [
-      "images/Project Flamingo Dayz/meadows pic1.png",
-      "images/Project Flamingo Dayz/meadows pic2.png",
-      "images/Project Flamingo Dayz/meadows pic3.png",
-      "images/Project Flamingo Dayz/meadows pic4.png",
-      "images/Project Flamingo Dayz/meadows pic5.png",
-      "images/Project Flamingo Dayz/meadows pic7.png",
-      "images/Project Flamingo Dayz/meadows pic8.png",
-      "images/Project Flamingo Dayz/meadows pic9.png",
-      "images/Project Flamingo Dayz/meadows pic10.png"
+      "images/project-flamingo/meadows-1.png",
+      "images/project-flamingo/meadows-2.png",
+      "images/project-flamingo/meadows-3.png",
+      "images/project-flamingo/meadows-4.png",
+      "images/project-flamingo/meadows-5.png",
+      "images/project-flamingo/meadows-7.png",
+      "images/project-flamingo/meadows-8.png",
+      "images/project-flamingo/meadows-9.png",
+      "images/project-flamingo/meadows-10.png"
     ]
   },
   {
     id: "pe2",
     category: "games",
-    background: "images/Unnanounced Project/genxsoftlcub.png",
+    background: "images/unannounced/card.png",
     classified: true,
     locked: true,
     title: "Unannounced Project",
@@ -160,6 +175,6 @@ const PROJECTS = [
     text: [],
     highlights: [],
     links: [],
-    gallery: ["images/gallery/pe2-blockout.png"]
+    gallery: ["images/unannounced/pe2.png"]
   }
 ];
