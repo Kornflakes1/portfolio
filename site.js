@@ -97,7 +97,9 @@ function viewHtml(p, prev, next) {
     + "</div>"
     + (pics.length ? '<div class="gallery pv-gallery pv-in">' + pics.map(function (pic) {
         const src = pic.src || pic;
-        return '<span class="gallery-item"><img src="' + esc(src) + '" alt="" loading="lazy">'
+        return '<span class="gallery-item">' + (pic.video
+            ? '<video src="' + esc(src) + '" autoplay muted loop playsinline></video>'
+            : '<img src="' + esc(src) + '" alt="" loading="lazy">')
           + (pic.label ? '<span class="gallery-tag">' + esc(pic.label) + "</span>" : "") + "</span>";
       }).join("") + "</div>" : "")
     + '<nav class="pv-nav pv-in">'
@@ -249,9 +251,8 @@ pv.querySelector(".pv-close").addEventListener("click", function () { closeView(
 pvScroll.addEventListener("click", function (e) {
   const step = e.target.closest(".pv-step");
   if (step) { stepView(Number(step.dataset.step)); return; }
-  if (e.target.tagName === "IMG" && e.target.closest(".gallery")) {
-    viewer.querySelector("img").src = e.target.src;
-    viewer.hidden = false;
+  if ((e.target.tagName === "IMG" || e.target.tagName === "VIDEO") && e.target.closest(".gallery")) {
+    openViewer(e.target);
   }
 });
 window.addEventListener("popstate", function () { if (!pv.hidden) closeView(true); });
@@ -440,11 +441,33 @@ if (groups) {
   });
 }
 
-// Full-size picture closes on click; Esc closes the picture first, then the project view.
-if (viewer) viewer.addEventListener("click", function () { viewer.hidden = true; });
+// Full-size picture or clip; closes on click, Esc closes it first, then the project view.
+function openViewer(el) {
+  const img = viewer.querySelector("img");
+  let clip = viewer.querySelector("video");
+  if (!clip) {
+    clip = document.createElement("video");
+    clip.controls = true;
+    clip.playsInline = true;
+    clip.addEventListener("click", function (e) { e.stopPropagation(); });
+    viewer.appendChild(clip);
+  }
+  const isClip = el.tagName === "VIDEO";
+  img.hidden = isClip;
+  clip.hidden = !isClip;
+  if (isClip) { clip.src = el.currentSrc || el.src; clip.play().catch(function () {}); }
+  else { img.src = el.src; clip.removeAttribute("src"); }
+  viewer.hidden = false;
+}
+function closeViewer() {
+  viewer.hidden = true;
+  const clip = viewer.querySelector("video");
+  if (clip) clip.pause();
+}
+if (viewer) viewer.addEventListener("click", closeViewer);
 document.addEventListener("keydown", function (e) {
   if (e.key !== "Escape") return;
-  if (viewer && !viewer.hidden) viewer.hidden = true;
+  if (viewer && !viewer.hidden) closeViewer();
   else closeView();
 });
 

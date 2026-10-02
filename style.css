@@ -1384,3 +1384,8 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
   text-transform: uppercase;
   pointer-events: none;
 }
+
+/* Clips in a gallery match the pictures. */
+.gallery video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; cursor: zoom-in; }
+.viewer video { max-width: 100%; max-height: 100%; }
+.viewer [hidden] { display: none; }

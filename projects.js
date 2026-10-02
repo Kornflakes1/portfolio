@@ -20,7 +20,7 @@
 //   hoverVideo: optional muted clip that plays on the card while hovered
 //   features:   optional bullet list shown as "Features"
 //   credits:    optional groups of { role, name } shown as "Credits"
-//   gallery:    pictures shown when the project is opened; a picture can be { src, label } to tag it
+//   gallery:    pictures shown when the project is opened; a picture can be { src, label } to tag it, add video: true for a clip
 //   bgVideo:    optional clip that plays once, faintly, behind the whole project view
 const PROJECTS = [
   {
@@ -110,7 +110,11 @@ const PROJECTS = [
     links: [
       { label: "Play on s&box", url: "https://sbox.game/kornflakes/one_more_round" }
     ],
-    gallery: []
+    gallery: [
+      { src: "images/One More Round/Church.png", label: "Screenshot" },
+      { src: "images/One More Round/trailer-preview.mp4", label: "Trailer", video: true },
+      { src: "images/One More Round/main-menu.mp4", label: "Main Menu", video: true }
+    ]
   },
   {
     id: "dayz",
