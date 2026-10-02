@@ -95,8 +95,10 @@ function viewHtml(p, prev, next) {
     + '<div class="pv-body pv-in">' + intro + results + features + credits
     + (role || servers ? '<section class="pv-section pv-pair' + (role && servers ? "" : " single") + '">' + role + servers + "</section>" : "")
     + "</div>"
-    + (pics.length ? '<div class="gallery pv-gallery pv-in">' + pics.map(function (src) {
-        return '<span class="gallery-item"><img src="' + esc(src) + '" alt="" loading="lazy"></span>';
+    + (pics.length ? '<div class="gallery pv-gallery pv-in">' + pics.map(function (pic) {
+        const src = pic.src || pic;
+        return '<span class="gallery-item"><img src="' + esc(src) + '" alt="" loading="lazy">'
+          + (pic.label ? '<span class="gallery-tag">' + esc(pic.label) + "</span>" : "") + "</span>";
       }).join("") + "</div>" : "")
     + '<nav class="pv-nav pv-in">'
     + (prev ? '<button class="pv-step" data-step="-1">&larr; ' + esc(prev.title) + "</button>" : "<span></span>")
@@ -133,14 +135,42 @@ function clearFrame() {
 function fillView() {
   clearInterval(serverTimer);
   const p = pvList[pvIndex];
-  pvScroll.innerHTML = viewHtml(p, pvList[pvIndex - 1], pvList[pvIndex + 1]);
+  pvScroll.innerHTML = (p.bgVideo ? '<div class="pv-bg"><video src="' + esc(p.bgVideo) + '" muted playsinline preload="auto"></video></div>' : "")
+    + viewHtml(p, pvList[pvIndex - 1], pvList[pvIndex + 1]);
   pvScroll.scrollTop = 0;
+  placeBgVideo();
   const box = pvScroll.querySelector(".servers");
   if (box) {
     refreshServers(box);
     serverTimer = setInterval(function () { refreshServers(box); }, 30000);
   }
 }
+
+// The background clip starts just above Role, and plays once when scrolled into view.
+let bgWatch = null;
+function topIn(el) {
+  return el.getBoundingClientRect().top - pvScroll.getBoundingClientRect().top + pvScroll.scrollTop;
+}
+function placeBgVideo() {
+  if (bgWatch) { bgWatch.disconnect(); bgWatch = null; }
+  const bg = pvScroll.querySelector(".pv-bg");
+  const from = pvScroll.querySelector(".pv-pair");
+  if (!bg) return;
+  bg.style.top = (from ? topIn(from) - 120 : 0) + "px";
+  const video = bg.querySelector("video");
+  bgWatch = new IntersectionObserver(function (entries) {
+    if (!entries[0].isIntersecting) return;
+    video.play().catch(function () {});
+    bgWatch.disconnect();
+    bgWatch = null;
+  }, { root: pvScroll, threshold: 0.3 });
+  bgWatch.observe(from || bg);
+}
+window.addEventListener("resize", function () {
+  const bg = pvScroll.querySelector(".pv-bg");
+  const from = pvScroll.querySelector(".pv-pair");
+  if (bg && from) bg.style.top = (topIn(from) - 120) + "px";
+});
 
 function openView(list, index, tile, instant) {
   if (pvBusy) return;

@@ -1355,3 +1355,32 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
 .credits dt { font-size: 15px; line-height: 1.6; font-weight: 600; }
 .credits dd { margin: 0; color: var(--dim); font-size: 15px; line-height: 1.6; text-align: right; }
 .pv-section .credits + .detail-label { margin-top: 36px; }
+
+/* Faint clip behind the lower part of the project view. */
+.pv-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 260px);
+  mask-image: linear-gradient(to bottom, transparent, #000 260px);
+}
+.pv-bg video { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0.22; }
+.pv-content { position: relative; z-index: 1; }
+
+/* Small tag on a gallery picture. */
+.gallery-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 4px 9px;
+  background: rgba(6, 10, 12, 0.82);
+  color: #e8e4da;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}

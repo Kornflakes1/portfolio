@@ -20,7 +20,8 @@
 //   hoverVideo: optional muted clip that plays on the card while hovered
 //   features:   optional bullet list shown as "Features"
 //   credits:    optional groups of { role, name } shown as "Credits"
-//   gallery:    pictures shown when the project is opened (put them in images/gallery/)
+//   gallery:    pictures shown when the project is opened; a picture can be { src, label } to tag it
+//   bgVideo:    optional clip that plays once, faintly, behind the whole project view
 const PROJECTS = [
   {
     id: "pe-redux",
@@ -59,7 +60,13 @@ const PROJECTS = [
       { label: "YouTube", url: "https://www.youtube.com/@PE-Redux" },
       { label: "Discord", url: "https://discord.gg/J8287MJTay" }
     ],
-    gallery: []
+    bgVideo: "images/PE Redux/web/radioboys.mp4",
+    gallery: [
+      { src: "images/PE Redux/web/roadmap.jpg", label: "Roadmap" },
+      { src: "images/PE Redux/web/update-1-5.jpg", label: "Update" },
+      { src: "images/PE Redux/web/infographic.jpg", label: "Infographic" },
+      { src: "images/PE Redux/web/house-art.jpg", label: "Art" }
+    ]
   },
   {
     id: "one-more-round",
