@@ -20,7 +20,7 @@
 //   hoverVideo: optional muted clip that plays on the card while hovered
 //   features:   optional bullet list shown as "Features"
 //   credits:    optional groups of { role, name } shown as "Credits"
-//   gallery:    pictures shown when the project is opened; a picture can be { src, label } to tag it, add video: true for a clip
+//   gallery:    pictures shown when the project is opened; a picture can be { src, label } to tag it, add video: true for a clip, youtube: id to open that video when clicked
 //   bgVideo:    optional clip that plays once, faintly, behind the whole project view
 const PROJECTS = [
   {
@@ -64,8 +64,7 @@ const PROJECTS = [
     gallery: [
       { src: "images/PE Redux/web/roadmap.jpg", label: "Roadmap" },
       { src: "images/PE Redux/web/update-1-5.jpg", label: "Update" },
-      { src: "images/PE Redux/web/infographic.jpg", label: "Infographic" },
-      { src: "images/PE Redux/web/house-art.jpg", label: "Art" }
+      { src: "images/PE Redux/web/infographic.jpg", label: "Infographic" }
     ]
   },
   {
@@ -112,7 +111,7 @@ const PROJECTS = [
     ],
     gallery: [
       { src: "images/One More Round/Church.png", label: "Screenshot" },
-      { src: "images/One More Round/trailer-preview.mp4", label: "Trailer", video: true },
+      { src: "images/One More Round/trailer-preview.mp4", label: "Trailer", video: true, youtube: "mxjlMaIrxw8" },
       { src: "images/One More Round/main-menu.mp4", label: "Main Menu", video: true }
     ]
   },

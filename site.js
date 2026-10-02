@@ -98,7 +98,7 @@ function viewHtml(p, prev, next) {
     + (pics.length ? '<div class="gallery pv-gallery pv-in">' + pics.map(function (pic) {
         const src = pic.src || pic;
         return '<span class="gallery-item">' + (pic.video
-            ? '<video src="' + esc(src) + '" autoplay muted loop playsinline></video>'
+            ? '<video src="' + esc(src) + '"' + (pic.youtube ? ' data-youtube="' + esc(pic.youtube) + '"' : "") + ' autoplay muted loop playsinline></video>'
             : '<img src="' + esc(src) + '" alt="" loading="lazy">')
           + (pic.label ? '<span class="gallery-tag">' + esc(pic.label) + "</span>" : "") + "</span>";
       }).join("") + "</div>" : "")
@@ -118,6 +118,47 @@ document.body.appendChild(pv);
 const pvFrame = pv.querySelector(".pv-frame");
 const pvScroll = pv.querySelector(".pv-scroll");
 const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const touch = window.matchMedia("(hover: none)").matches;
+const phone = window.matchMedia("(max-width: 600px)");
+
+// Phones: a swipe row where the middle item faces you and the ones either side
+// shrink, turn away and dim. Starts on the middle item.
+function coverFlow(row, items, onSettle) {
+  if (!phone.matches || !items.length) return;
+  row.classList.add("cf-row");
+  items.forEach(function (el) { el.classList.add("cf-item"); });
+  let current = -1;
+  let settle = null;
+  const update = function () {
+    const mid = row.scrollLeft + row.clientWidth / 2;
+    let best = 0, bestD = Infinity;
+    items.forEach(function (el, i) {
+      const d = (el.offsetLeft + el.offsetWidth / 2 - mid) / el.offsetWidth;
+      const a = Math.min(Math.abs(d), 1.5);
+      const s = Math.sign(d);
+      el.style.transform = "perspective(900px) rotateY(" + (-s * Math.min(a, 1) * 38).toFixed(1) + "deg) scale(" + (1 - a * 0.16).toFixed(3) + ")";
+      el.style.opacity = (1 - a * 0.45).toFixed(2);
+      el.style.zIndex = String(10 - Math.round(a * 4));
+      if (Math.abs(d) < bestD) { bestD = Math.abs(d); best = i; }
+    });
+    clearTimeout(settle);
+    settle = setTimeout(function () {
+      if (best !== current) { current = best; if (onSettle) onSettle(items[best]); }
+      else if (onSettle) onSettle(items[best]);
+    }, 120);
+  };
+  const start = function () {
+    if (!row.clientWidth) return requestAnimationFrame(start);
+    const m = items[Math.floor((items.length - 1) / 2)];
+    row.style.scrollSnapType = "none";
+    row.scrollLeft = m.offsetLeft + m.offsetWidth / 2 - row.clientWidth / 2;
+    row.style.scrollSnapType = "";
+    update();
+  };
+  row.addEventListener("scroll", function () { requestAnimationFrame(update); }, { passive: true });
+  window.addEventListener("resize", update);
+  start();
+}
 let pvList = [];
 let pvIndex = -1;
 let pvTile = null;
@@ -145,6 +186,8 @@ function fillView() {
   pvScroll.innerHTML = layers + viewHtml(p, pvList[pvIndex - 1], pvList[pvIndex + 1]);
   pvScroll.scrollTop = 0;
   watchLayers();
+  const gal = pvScroll.querySelector(".pv-gallery");
+  if (gal) coverFlow(gal, Array.from(gal.children));
   const box = pvScroll.querySelector(".servers");
   if (box) {
     refreshServers(box);
@@ -363,16 +406,20 @@ function makeGrid(grid, list, squares) {
     // "Click to Expand" fades in just under whichever card is hovered.
     const hint = document.createElement("span");
     hint.className = "open-hint";
-    hint.textContent = "Click to Expand";
+    hint.textContent = touch ? "Tap to Expand" : "Click to Expand";
     grid.appendChild(hint);
-    grid.querySelectorAll(".tile:not(.locked)").forEach(function (t) {
-      t.addEventListener("mouseenter", function () {
-        const mid = Number(t.dataset.bottomMid || 100) / 100;
-        hint.style.left = (t.offsetLeft + t.offsetWidth / 2) + "px";
-        hint.style.top = (t.offsetTop + t.offsetHeight * mid + 10) + "px";
-        hint.style.setProperty("--angle", t.style.getPropertyValue("--text-angle") || "0rad");
-        hint.classList.add("on");
-      });
+    const hintUnder = function (t) {
+      const mid = Number(t.dataset.bottomMid || 100) / 100;
+      hint.style.left = (t.offsetLeft + t.offsetWidth / 2) + "px";
+      hint.style.top = (t.offsetTop + t.offsetHeight * mid + 10) + "px";
+      hint.style.setProperty("--angle", t.style.getPropertyValue("--text-angle") || "0rad");
+      hint.classList.toggle("on", !t.classList.contains("locked"));
+    };
+    if (grid === document.querySelector("main > .grid")) {
+      coverFlow(grid, Array.from(grid.querySelectorAll(".tile")), hintUnder);
+    }
+    if (!touch) grid.querySelectorAll(".tile:not(.locked)").forEach(function (t) {
+      t.addEventListener("mouseenter", function () { hintUnder(t); });
       t.addEventListener("mouseleave", function () { hint.classList.remove("on"); });
     });
   }
@@ -431,6 +478,27 @@ function makeGrid(grid, list, squares) {
     tile.addEventListener("mouseleave", function () { v.pause(); v.currentTime = 0; });
   });
 
+  // Phones can't hover: a card that stays in view for a moment plays its hover effects instead.
+  if (touch) {
+    const timers = new Map();
+    const seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        const t = en.target;
+        clearTimeout(timers.get(t));
+        if (en.isIntersecting) {
+          timers.set(t, setTimeout(function () {
+            t.classList.add("live");
+            t.dispatchEvent(new Event("mouseenter"));
+          }, 1500));
+        } else if (t.classList.contains("live")) {
+          t.classList.remove("live");
+          t.dispatchEvent(new Event("mouseleave"));
+        }
+      });
+    }, { threshold: 0.75 });
+    grid.querySelectorAll(".tile:not(.locked)").forEach(function (t) { seen.observe(t); });
+  }
+
   const openable = list.filter(function (p) { return !p.locked; });
   grid.addEventListener("click", function (e) {
     const tile = e.target.closest(".tile");
@@ -475,6 +543,24 @@ function openViewer(el) {
     clip.addEventListener("click", function (e) { e.stopPropagation(); });
     viewer.appendChild(clip);
   }
+  let tube = viewer.querySelector("iframe");
+  if (!tube) {
+    tube = document.createElement("iframe");
+    tube.allow = "autoplay; fullscreen; encrypted-media; picture-in-picture";
+    tube.allowFullscreen = true;
+    viewer.appendChild(tube);
+  }
+  const id = el.dataset.youtube;
+  tube.hidden = !id;
+  if (id) {
+    img.hidden = true;
+    clip.hidden = true;
+    clip.removeAttribute("src");
+    tube.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) + "?autoplay=1&rel=0";
+    viewer.hidden = false;
+    return;
+  }
+  tube.removeAttribute("src");
   const isClip = el.tagName === "VIDEO";
   img.hidden = isClip;
   clip.hidden = !isClip;
@@ -486,6 +572,8 @@ function closeViewer() {
   viewer.hidden = true;
   const clip = viewer.querySelector("video");
   if (clip) clip.pause();
+  const tube = viewer.querySelector("iframe");
+  if (tube) tube.removeAttribute("src");
 }
 if (viewer) viewer.addEventListener("click", closeViewer);
 document.addEventListener("keydown", function (e) {
