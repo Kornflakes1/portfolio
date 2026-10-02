@@ -137,10 +137,14 @@ function clearFrame() {
 function fillView() {
   clearInterval(serverTimer);
   const p = pvList[pvIndex];
-  pvScroll.innerHTML = (p.bgVideo ? '<div class="pv-bg"><video src="' + esc(p.bgVideo) + '" muted playsinline preload="auto"></video></div>' : "")
-    + viewHtml(p, pvList[pvIndex - 1], pvList[pvIndex + 1]);
+  const layers = p.bgVideo
+    ? '<div class="pv-top" style="background-image: url(\'' + esc(p.background || "") + '\')'
+      + (p.cardFill ? "; background-color: " + esc(p.cardFill) : "") + '"></div>'
+      + '<div class="pv-bg"><video src="' + esc(p.bgVideo) + '" muted playsinline preload="auto"></video></div>'
+    : "";
+  pvScroll.innerHTML = layers + viewHtml(p, pvList[pvIndex - 1], pvList[pvIndex + 1]);
   pvScroll.scrollTop = 0;
-  placeBgVideo();
+  watchLayers();
   const box = pvScroll.querySelector(".servers");
   if (box) {
     refreshServers(box);
@@ -148,17 +152,33 @@ function fillView() {
   }
 }
 
-// The background clip starts just above Role, and plays once when scrolled into view.
+// Projects with a clip: the top picture runs down to just above Role, then blends into the clip,
+// which plays once when scrolled into view.
 let bgWatch = null;
+let heroWatch = null;
 function topIn(el) {
   return el.getBoundingClientRect().top - pvScroll.getBoundingClientRect().top + pvScroll.scrollTop;
 }
-function placeBgVideo() {
-  if (bgWatch) { bgWatch.disconnect(); bgWatch = null; }
+function placeLayers() {
+  const top = pvScroll.querySelector(".pv-top");
   const bg = pvScroll.querySelector(".pv-bg");
   const from = pvScroll.querySelector(".pv-pair");
+  if (!top || !bg || !from) return;
+  const line = topIn(from) - 32;
+  top.style.height = (line + 80) + "px";
+  bg.style.top = (line - 140) + "px";
+}
+function watchLayers() {
+  if (bgWatch) { bgWatch.disconnect(); bgWatch = null; }
+  if (heroWatch) { heroWatch.disconnect(); heroWatch = null; }
+  const bg = pvScroll.querySelector(".pv-bg");
   if (!bg) return;
-  bg.style.top = (from ? topIn(from) - 120 : 0) + "px";
+  const hero = pvScroll.querySelector(".pv-hero");
+  hero.classList.add("long");
+  // The hero changes height while the view opens, so re-place whenever it does.
+  heroWatch = new ResizeObserver(placeLayers);
+  heroWatch.observe(hero);
+  placeLayers();
   const video = bg.querySelector("video");
   bgWatch = new IntersectionObserver(function (entries) {
     if (!entries[0].isIntersecting) return;
@@ -166,13 +186,9 @@ function placeBgVideo() {
     bgWatch.disconnect();
     bgWatch = null;
   }, { root: pvScroll, threshold: 0.3 });
-  bgWatch.observe(from || bg);
+  bgWatch.observe(pvScroll.querySelector(".pv-pair") || bg);
 }
-window.addEventListener("resize", function () {
-  const bg = pvScroll.querySelector(".pv-bg");
-  const from = pvScroll.querySelector(".pv-pair");
-  if (bg && from) bg.style.top = (topIn(from) - 120) + "px";
-});
+window.addEventListener("resize", placeLayers);
 
 function openView(list, index, tile, instant) {
   if (pvBusy) return;

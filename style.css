@@ -1363,10 +1363,33 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
   right: 0;
   bottom: 0;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 260px);
-  mask-image: linear-gradient(to bottom, transparent, #000 260px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 300px);
+  mask-image: linear-gradient(to bottom, transparent, #000 300px);
 }
 .pv-bg video { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0.22; }
+
+/* Long top picture: runs behind the title and text, darkened, fading out above Role. */
+.pv-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: auto 62vh;
+  pointer-events: none;
+}
+.pv-top::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(14, 20, 22, 0) 0, rgba(14, 20, 22, 0) 30vh,
+    rgba(14, 20, 22, 0.86) 62vh, rgba(14, 20, 22, 0.86) calc(100% - 300px),
+    #0e1416 100%);
+}
+.project-view:not(.pv-anim) .pv-hero.long { background: none !important; }
+.pv-hero.long::after { display: none; }
 .pv-content { position: relative; z-index: 1; }
 
 /* Small tag on a gallery picture. */
@@ -1389,3 +1412,15 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
 .gallery video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; cursor: zoom-in; }
 .viewer video { max-width: 100%; max-height: 100%; }
 .viewer [hidden] { display: none; }
+
+/* Project view scrollbar: plain white bar, no arrows. Chrome/Edge only use the
+   ::-webkit-scrollbar styles when scrollbar-color/width are left on auto. */
+.pv-scroll { scrollbar-width: auto; scrollbar-color: auto; }
+.pv-scroll::-webkit-scrollbar { width: 8px; }
+.pv-scroll::-webkit-scrollbar-track { background: transparent; }
+.pv-scroll::-webkit-scrollbar-thumb { background: #d9d4c7; border: 0; }
+.pv-scroll::-webkit-scrollbar-thumb:hover { background: #ffffff; }
+.pv-scroll::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+@-moz-document url-prefix() {
+  .pv-scroll { scrollbar-width: thin; scrollbar-color: #d9d4c7 transparent; }
+}
