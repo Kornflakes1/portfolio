@@ -79,19 +79,19 @@ const PROJECTS = [
     role: "",
     dates: "",
     text: [
-      "\"Final Call\" is a hilarious first person physics based bar fight simulator.",
+      "\"Final Call\" is a hilarious first-person, physics-based bar fight simulator.",
       "You're the lone sheriff in town, it's the last call for drinks at the bar and everybody is determined to stand between you and a cold bottle of hooch.",
       "Step into the shoes of the sheriff and hurl tables, chairs, bodies and punch your way through to the bar to get \"one more round.\"",
-      "You'll slowly find out theres more to this saloon than meets the eye."
+      "You'll slowly find out there's more to this saloon than meets the eye."
     ],
     features: [
       "Physics based fighting where you can pick up and throw anything and everyone!!!",
       "Punch, kick, block and dash",
       "Completely custom sound effects from the PSX era",
-      "Sweet Doom inspired HUD and sprites.",
+      "Sweet Doom inspired HUD and sprites",
       "Fully voice acted characters",
       "A rage mode that lets you tear enemies apart",
-      "A tutorial, three levels and a fully playable boss fight (I managed to get it out!!)"
+      "A tutorial, three levels and a fully playable boss fight"
     ],
     credits: [
       { title: "Credits", rows: [
@@ -135,7 +135,7 @@ const PROJECTS = [
   {
     id: "dayz",
     category: "modding",
-    background: "images/project-flamingo/title.png",
+    background: "images/project-flamingo/title.jpg",
     cardZoom: 0.7,
     hoverCycle: true,
     title: "Project Flamingo",
@@ -144,24 +144,24 @@ const PROJECTS = [
     dates: "2022 - 2025",
     text: [],
     highlights: [
-      "Co-led development of a custom server for a community of 100,000+ members",
+      "Co-led development of a DayZ custom server for a community of 100,000+ members",
       "Designed and built a 4km²+ open-world map in DayZ Terrain Builder",
       "3,000+ hours of self-taught DayZ modding, using legacy scripting and manual, destructive toolsets",
-      "Iterated on terrain, object placement and world density from playtest data and player behaviour",
+      "Iterated on terrain, object placement and world density from playtest data, behaviour and player feedback",
       "Built biomes, towns, landmarks and points of interest around player flow, encounters and environmental storytelling",
       "Co-wrote design documents to keep a consistent creative vision through development"
     ],
     links: [],
     gallery: [
-      "images/project-flamingo/meadows-1.png",
-      "images/project-flamingo/meadows-2.png",
-      "images/project-flamingo/meadows-3.png",
-      "images/project-flamingo/meadows-4.png",
-      "images/project-flamingo/meadows-5.png",
-      "images/project-flamingo/meadows-7.png",
-      "images/project-flamingo/meadows-8.png",
-      "images/project-flamingo/meadows-9.png",
-      "images/project-flamingo/meadows-10.png"
+      "images/project-flamingo/meadows-1.jpg",
+      "images/project-flamingo/meadows-2.jpg",
+      "images/project-flamingo/meadows-3.jpg",
+      "images/project-flamingo/meadows-4.jpg",
+      "images/project-flamingo/meadows-5.jpg",
+      "images/project-flamingo/meadows-7.jpg",
+      "images/project-flamingo/meadows-8.jpg",
+      "images/project-flamingo/meadows-9.jpg",
+      "images/project-flamingo/meadows-10.jpg"
     ]
   },
   {

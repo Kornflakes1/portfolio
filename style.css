@@ -492,19 +492,48 @@ main {
 .history { list-style: none; margin: 0; padding: 0; }
 
 .history li {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 10px 0;
+  padding: 18px 0;
   border-top: 1px solid var(--line);
   color: var(--dim);
 }
 
+/* Each role links to its project. */
+.role-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.role-head:hover strong { border-bottom: 1px solid var(--ink); }
+
+.role-title { margin: 2px 0 0; color: var(--ink); font-size: 15px; opacity: 0.85; }
+
+.role-result { margin: 4px 0 0; color: var(--dim); font-size: 15px; line-height: 1.5; }
+
+/* Big numbers between the bio and the experience list. */
+.about-page .about-stats { margin-top: 40px; }
+
+.about-stats .result strong { color: var(--ink); }
+
+/* Tools grouped by what they're for. */
+.tool-groups {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 28px;
+  margin: 0;
+}
+
+.tool-groups dt { color: var(--ink); font-weight: 600; font-size: 15px; line-height: 1.9; }
+
+.tool-groups dd { margin: 0; color: var(--dim); line-height: 1.9; }
+
 .history li:first-child { border-top: 0; padding-top: 0; }
 
-.history strong { color: var(--ink); font-weight: 600; }
+.history strong { color: var(--ink); font-weight: 600; font-size: 18px; }
 
-.history .when { font-family: var(--mono); font-size: 14px; white-space: nowrap; }
+.history .when { font-family: var(--mono); font-size: 14px; white-space: nowrap; align-self: center; }
 
 .plain-list { margin: 0; color: var(--dim); line-height: 1.9; }
 
@@ -824,7 +853,9 @@ main {
   .learning-grid { grid-template-columns: 1fr; }
   .about-page { padding-top: 180px; }
   .bio p { font-size: 18px; }
-  .history li { flex-direction: column; gap: 2px; }
+  .role-head { flex-direction: column; gap: 2px; }
+  .tool-groups { grid-template-columns: 1fr; gap: 0; }
+  .tool-groups dd + dt { margin-top: 10px; }
   .learning-grid dd { border-top: 0; padding-top: 0; }
 }
 
@@ -879,8 +910,8 @@ main {
   filter: blur(22px) saturate(1.6) brightness(1.1) grayscale(0.75) contrast(1.15) brightness(0.72);
 }
 
-/* Locked cards don't lift or grow on hover. */
-.tile.locked:hover { transform: none; }
+/* Locked cards ignore the mouse entirely: no lift, no outline, no expand icon. */
+.tile.locked { pointer-events: none; }
 
 /* ---- Full-screen project view ---- */
 
@@ -1457,7 +1488,7 @@ a.btn.small { padding: 8px 16px; font-size: 14px; }
     justify-content: flex-start;
     gap: 0;
     margin: 0 -16px;
-    padding: 8px 24vw 16px;
+    padding: 8px 24vw 44px; /* room under the cards for "Tap to Expand", which the swipe row would otherwise clip */
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
